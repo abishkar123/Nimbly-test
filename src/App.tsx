@@ -1,15 +1,21 @@
-import { useState } from 'react'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import TodoList from './pages/Todolist';
+import useAuth from './hooks/useAuth';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const { auth } = useAuth()
 
   return (
-    <div className='font-xs text-center'>
-      full Application cooming soon
-      
-    </div>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login/>}/>
+        <Route path="/todolist" element={<TodoList/>}/>
+    
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;
