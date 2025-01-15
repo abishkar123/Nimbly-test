@@ -41,16 +41,16 @@ export const loginUser = async (
   }
 };
 
-
 export const getTodos = async (
   userId: number,
   page: number,
-  limit: number
+  limit: number,
+  completed: boolean
 ): Promise<TodosResponse | { status: string; message: string }> => {
   try {
     const skip = (page - 1) * limit; 
     const { data } = await axios.get<TodosResponse>(
-      `${todoApi}/${userId}?skip=${skip}&limit=${limit}`
+      `${todoApi}/${userId}?skip=${skip}&limit=${limit}&completed=${completed}`
     );
     return data;
   } catch (error: any) {

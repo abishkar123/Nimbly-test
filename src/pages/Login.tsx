@@ -3,7 +3,7 @@ import useAuth, { userinfo } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../helper/axios';
 import { Form, Spinner, Button } from 'react-bootstrap';
-import '../App.css';
+// import '../App.css';
 
 const Login: React.FC = () => {
   const { setAuth } = useAuth();
@@ -63,7 +63,7 @@ const Login: React.FC = () => {
   ];
 
   return (
-    <div>
+    
     <div className='login-form'>
       <p className='text-2xl font-semibold text-center p-3'>Things ToDo!</p>
       <Form className="mt-3 p-5" onSubmit={handleOnSubmit}>
@@ -115,7 +115,7 @@ const Login: React.FC = () => {
         </div>
       )}
     </div>
-  </div>
+ 
   );
 };
 

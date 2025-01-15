@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { getTodos } from '../helper/axios';
 import ReactPaginate from 'react-paginate';
-import { toast } from 'react-toastify';
+import { Header } from '../components/Header/Header';
+import { Container, Table } from 'react-bootstrap';
 
 interface Todo {
   id: number;
@@ -14,9 +15,11 @@ interface Todo {
 const TodoList: React.FC = () => {
   const { auth, setAuth } = useAuth();
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [page, setPage] = useState(1); // Current page number
-  const [limit] = useState(3); // Items per page
-  const [totalPages, setTotalPages] = useState(1); // Total number of pages
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]); // State for filtered todos
+  const [page, setPage] = useState(1); 
+  const [limit] = useState(10); 
+  const [totalPages, setTotalPages] = useState(1); 
+  const [completedFilter, setCompletedFilter] = useState<string>('true'); // Added filter state
   const Navigate = useNavigate();
 
   const [userdetails, setUserDetails] = useState(() => {
@@ -24,6 +27,11 @@ const TodoList: React.FC = () => {
     return storedUserData ? JSON.parse(storedUserData) : null;
   });
   const userId = userdetails?.id;
+
+
+  const filterTodos = (todos: Todo[], filter: string) => {
+    return todos.filter(todo => String(todo.completed) === filter);
+  };
 
   useEffect(() => {
     if (!auth || !userdetails) {
@@ -35,10 +43,12 @@ const TodoList: React.FC = () => {
       if (!userId) return;
 
       try {
-        const response = await getTodos(userId, page, limit); // Pass page and limit
+        const response = await getTodos(userId, page, limit, completedFilter); // Pass filter to API
         if ('todos' in response) {
-          setTodos(response.todos || []);
-          setTotalPages(Math.ceil(response.total / limit)); // Calculate total pages
+          const fetchedTodos = response.todos || [];
+          setTodos(fetchedTodos);
+          setTotalPages(Math.ceil(response.total / limit)); 
+          setFilteredTodos(filterTodos(fetchedTodos, completedFilter)); // Apply filter after fetching
         } else {
           console.error(response.message);
         }
@@ -48,56 +58,84 @@ const TodoList: React.FC = () => {
     };
 
     fetchTodos();
-  }, [auth, page, userdetails, userId]);
-
-  const handleLogout = () => {
-    try {
-      setAuth(null);
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userdata');
-  
-      toast.success('You have been logged out successfully!');
-  
-      Navigate('/');
-    } catch (error) {
-      toast.error('Failed to log out. Please try again.');
-    }
-  };
+  }, [auth, page, userdetails, userId, completedFilter]); 
 
   const handlePageClick = ({ selected }: { selected: number }) => {
-    setPage(selected + 1); // ReactPaginate uses zero-based index for pages
+    setPage(selected + 1); 
+  };
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCompletedFilter(e.target.value); // Update filter state
   };
 
   return (
-    <div>
-      <h2>Your To-Do List</h2>
-      <button onClick={handleLogout}>Logout</button>
-      <ul>
-        {todos.length > 0 ? (
-          todos.map((todo) => <li key={todo.id}>{todo.todo}</li>)
-        ) : (
-          <p>No todos found.</p>
-        )}
-      </ul>
-      <div className="pagination">
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="Next"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={totalPages}
-          previousLabel="Previous"
-          marginPagesDisplayed={2}
-          containerClassName="pagination justify-content-center"
-          pageClassName="page-item"
-          pageLinkClassName="page-link"
-          previousClassName="page-item"
-          previousLinkClassName="page-link"
-          nextClassName="page-item"
-          nextLinkClassName="page-link"
-          activeClassName="active"
-        />
-      </div>
+    <div className='font-nunito w-full h-full text-sm'>
+      <Header />
+      <Container>
+        <p className='text-xl font-semibold d-flex justify-center mt-3'>My To-Do-List</p>
+  
+        <div className="mt-4">
+          <label>
+            Task Completed:
+            <select value={completedFilter} onChange={handleFilterChange} className="form-select">
+              <option value="true">Completed</option>
+              <option value="false">Not Completed</option>
+            </select>
+          </label>
+        </div>
+
+        <div className='table-responsive'>
+        <Table className='mt-4'>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Todo</th>
+              <th>Completed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTodos.length > 0 ? (
+              filteredTodos.map((todo, index) => (
+                <tr key={todo.id}>
+                  <td>{index + 1}</td>
+                  <td>{todo.todo}</td>
+                  <td>{todo.completed ? 'Yes' : 'No'}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={3}>No todos found.</td>
+              </tr>
+            )}
+            </tbody>
+        </Table>
+
+
+        <div className=" mt-5 ">
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="Next"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={totalPages}
+            previousLabel="Previous"
+            marginPagesDisplayed={2}
+            containerClassName="pagination justify-content-center"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            activeClassName="active"
+          />
+        </div>
+
+
+        </div>
+       
+
+      </Container>
     </div>
   );
 };

@@ -7,19 +7,12 @@ const useAuth = () => {
     return token ? { token } : null;
   });
 
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      setAuth({ token });
-    } else {
-      setAuth(null);
-    }
-  }, []);
-
+  // Expose the state and updater
   return { auth, setAuth };
 };
 
 export default useAuth;
+
 
 export const userinfo = () => {
     const [userdata, setuserData] = useState(() => {
