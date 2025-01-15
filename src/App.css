@@ -1,0 +1,106 @@
+:root {
+    --text-font:nunito;
+    --primary-bg-color: #9c949452;
+}
+
+.content-container{
+    font-family: var(--text-font);
+    width: auto;
+    min-height: 100vh;
+}
+
+.edit-content{
+        background-color: #fff;
+        width: 90%;
+        min-height: 60vh;
+        border: 1px solid #ddd; 
+        border-radius: 8px; 
+        position: relative;
+        left: 4rem;
+        padding: 1rem; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    
+}
+.custom-form{
+    background-color: #eee7e746;
+    border: 3px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 20rem;
+    padding:2.5px;
+
+}
+.Custom-button{
+    background-color:#f84e02 ;
+    border: 3px;
+    border-radius: 32px;
+    width:20rem;
+}
+
+.custom-button-font{
+    color: white;
+
+}
+
+
+.custom-button-font:hover{
+    color:#f84e02 ;
+}
+
+.login-form{
+    position: relative;
+    left: 35rem;
+
+  
+    min-height: 50vh;
+    width: 60vh;
+    margin-top: 6rem;
+    font-family: var(--text-font);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.custom-color{
+    color:#f84e02
+}s
+
+.input-dev{
+    width: 5rem;
+}
+.edit-btn{
+    display: flex;
+    justify-content: right;
+}
+.text-title{
+    font-family: var(--text-font);
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+@media screen and (min-width: 400px) and (max-width: 800px) {
+    .register-page{
+        position: relative;
+        left:2rem;
+      
+        min-height: 30vh;
+        width: 60vh;
+        margin-top: 6rem;
+        font-family: var(--text-font);
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+    .edit-content{
+        background-color: #fff;
+        width: 75%;
+        min-height: 60vh;
+        border: 1px solid #ddd; 
+        border-radius: 8px; 
+        position: relative;
+        left: 4rem;
+        padding: 1rem; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    
+}
+
+.text-title{
+    font-size: 18px;
+}
+}
