@@ -13,7 +13,6 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState("");
-
   const navigate = useNavigate();
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,17 +57,18 @@ const Login: React.FC = () => {
   };
 
   const inputs = [
-    { label: 'Username', type: 'text', name: 'username', placeholder: 'Enter your username' },
-    { label: 'Password', type: 'password', name: 'password', placeholder: 'Enter your password' },
+    { 
+      label: 'Username', type: 'text', name: 'username', },
+    { label: 'Password', type: 'password', name: 'password',},
   ];
 
   return (
     <div>
     <div className='login-form'>
-      <p className='text-2xl font-semibold text-center p-3'>Login Here!</p>
+      <p className='text-2xl font-semibold text-center p-3'>Things ToDo!</p>
       <Form className="mt-3 p-5" onSubmit={handleOnSubmit}>
         {inputs.map((input, idx) => (
-          <div className="mb-7 relative" key={idx}>
+          <div className="mb-6 relative" key={idx}>
             <input
               type={input.type}
               name={input.name}

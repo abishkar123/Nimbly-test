@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { getTodos } from '../helper/axios';
 import ReactPaginate from 'react-paginate';
+import { toast } from 'react-toastify';
 
 interface Todo {
   id: number;
@@ -50,10 +51,17 @@ const TodoList: React.FC = () => {
   }, [auth, page, userdetails, userId]);
 
   const handleLogout = () => {
-    setAuth(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userdata');
-    Navigate('/');
+    try {
+      setAuth(null);
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userdata');
+  
+      toast.success('You have been logged out successfully!');
+  
+      Navigate('/');
+    } catch (error) {
+      toast.error('Failed to log out. Please try again.');
+    }
   };
 
   const handlePageClick = ({ selected }: { selected: number }) => {

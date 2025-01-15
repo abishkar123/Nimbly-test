@@ -76,18 +76,17 @@
     font-weight: bolder;
 }
 
-@media screen and (min-width: 400px) and (max-width: 800px) {
-    .register-page{
+.text-title{
+    font-size: 18px;
+}
+
+@media screen and (max-width: 600px) {
+    .login-form{
         position: relative;
         left:2rem;
-      
-        min-height: 30vh;
-        width: 60vh;
-        margin-top: 6rem;
-        font-family: var(--text-font);
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    
     }
-    .edit-content{
+    /* .edit-content{
         background-color: #fff;
         width: 75%;
         min-height: 60vh;
@@ -96,11 +95,14 @@
         position: relative;
         left: 4rem;
         padding: 1rem; 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  */
     
 }
 
-.text-title{
-    font-size: 18px;
+@media screen and (min-width: 768px) and (max-width: 1024px){
+    .login-form{
+        position: relative;
+        left: 16rem;
+    }
 }
-}
+

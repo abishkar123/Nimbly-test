@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from "react-toastify";
 
 const rootUrl = 'https://dummyjson.com';
 
@@ -23,16 +24,23 @@ export const loginUser = async (
   userData: { username: string, password: string }
 ) => {
   try {
-    const {data} = await axios.post(`${clientApi}/login`, userData)
-   return data
-  }catch (error){
-  console.log("Error logging user", error)
-  return {
-    status: 'error',
-    message: error.message,
-  };
-}
-}
+    const { data } = await axios.post(`${clientApi}/login`, userData);
+
+    if (data?.accessToken) {
+      toast.success('Login successful!');
+    }
+
+    return data;
+  } catch (error) { 
+    toast.error(error?.response?.data?.message || 'Login failed. Please try again.');
+    
+    return {
+      status: 'error',
+      message: error.message,
+    };
+  }
+};
+
 
 export const getTodos = async (
   userId: number,
@@ -40,17 +48,20 @@ export const getTodos = async (
   limit: number
 ): Promise<TodosResponse | { status: string; message: string }> => {
   try {
-    const skip = (page - 1) * limit; // Calculate items to skip
+    const skip = (page - 1) * limit; 
     const { data } = await axios.get<TodosResponse>(
       `${todoApi}/${userId}?skip=${skip}&limit=${limit}`
     );
-    console.log('API Response:', data);
     return data;
   } catch (error: any) {
     console.error('Error fetching todos:', error);
+
+    toast.error(error?.response?.data?.message || 'Error fetching todos. Please try again.');
+    
     return {
       status: 'error',
-      message: error.response?.data?.message || error.message,
+      message: error.message,
     };
   }
 };
+
