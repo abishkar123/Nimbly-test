@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 
-const useAuth = () => {
+ export const useAuth = () => {
   const [auth, setAuth] = useState(() => {
-    // Initialize auth state from localStorage
-    const token = localStorage.getItem("authToken");
-    return token ? { token } : null;
+  
+  const token = localStorage.getItem("authToken");
+  return token ? { token } : null;
   });
 
-  // Expose the state and updater
   return { auth, setAuth };
 };
-
-export default useAuth;
-
 
 export const userinfo = () => {
     const [userdata, setuserData] = useState(() => {

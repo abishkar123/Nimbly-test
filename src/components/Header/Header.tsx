@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import './Header.css'
-import useAuth from '../../hooks/useAuth';
+// import './Header.css'
+import {useAuth} from '../../hooks/useAuth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 

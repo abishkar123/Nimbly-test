@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useAuth, { userinfo } from '../hooks/useAuth';
+import { useAuth, userinfo } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../helper/axios';
 import { Form, Spinner, Button } from 'react-bootstrap';
@@ -15,8 +15,8 @@ interface FocusedFields {
 }
 
 const Login: React.FC = () => {
-  const { setAuth } = useAuth();
-  const { setuserData } = userinfo();
+  const {...setAuth } = useAuth();
+  const {...setuserData } = userinfo();
   const [form, setForm] = useState<FormState>({ username: '', password: '' });
   const [focusedFields, setFocusedFields] = useState<FocusedFields>({
     username: false,
@@ -68,40 +68,56 @@ const Login: React.FC = () => {
     }
   };
 
-  const inputs = [
-    { label: 'Username', type: 'text', name: 'username' },
-    { label: 'Password', type: 'password', name: 'password' },
-  ];
-
   return (
     <div className="login-form">
       <p className="text-2xl font-semibold text-center p-3">Things ToDo!</p>
       <Form className="mt-3 p-5" onSubmit={handleOnSubmit}>
-        {inputs.map((input, idx) => (
-          <div className="mb-6 relative" key={idx}>
-            <input
-              type={input.type}
-              id="input.name"
-              name={input.name}
-              value={form[input.name as keyof FormState]}
-              onChange={handleOnChange}
-              onFocus={() => handleFocus(input.name as keyof FocusedFields)}
-              onBlur={(e) => handleBlur(e, input.name as keyof FocusedFields)}
-              className="p-3 custom-form rounded-lg focus:outline-none"
-              required
-            />
-            <label
-              htmlFor={input.name}
-              className={`absolute left-3 top-4 transition-all duration-200 ease-in-out ${
-                focusedFields[input.name as keyof FocusedFields]
-                  ? 'top-0 text-xs text-gray-600'
-                  : 'top-4 text-gray-600'
-              }`}
-            >
-              {input.label}
-            </label>
-          </div>
-        ))}
+        {/* Username field */}
+        <div className="mb-6 relative">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={form.username}
+            onChange={handleOnChange}
+            onFocus={() => handleFocus('username')}
+            onBlur={(e) => handleBlur(e, 'username')}
+            className="p-3 custom-form rounded-lg focus:outline-none"
+            required
+          />
+          <label
+            htmlFor="username"
+            className={`absolute left-3 top-4 transition-all duration-200 ease-in-out ${
+              focusedFields.username ? 'top-0 text-xs text-gray-600' : 'top-4 text-gray-600'
+            }`}
+          >
+            Username
+          </label>
+        </div>
+
+        {/* Password field */}
+        <div className="mb-6 relative">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={form.password}
+            onChange={handleOnChange}
+            onFocus={() => handleFocus('password')}
+            onBlur={(e) => handleBlur(e, 'password')}
+            className="p-3 custom-form rounded-lg focus:outline-none"
+            required
+          />
+          <label
+            htmlFor="password"
+            className={`absolute left-3 top-4 transition-all duration-200 ease-in-out ${
+              focusedFields.password ? 'top-0 text-xs text-gray-600' : 'top-4 text-gray-600'
+            }`}
+          >
+            Password
+          </label>
+        </div>
+
         <div className="mb-7">
           <Button className="p-2.5 Custom-button" type="submit" disabled={isLoading}>
             {isLoading ? (
@@ -121,9 +137,7 @@ const Login: React.FC = () => {
       </Form>
       {response.message && (
         <div
-          className={`mt-3 ${
-            response.status === 'error' ? 'text-red-500' : 'text-green-500'
-          }`}
+          className={`mt-3 ${response.status === 'error' ? 'text-red-500' : 'text-green-500'}`}
         >
           {response.message}
         </div>
