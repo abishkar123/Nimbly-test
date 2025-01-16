@@ -1,8 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { toast } from "react-toastify";
 
 const rootUrl = 'https://dummyjson.com';
-
 const clientApi = `${rootUrl}/auth`;
 const todoApi = `${rootUrl}/todos/user`;
 
@@ -19,9 +18,8 @@ export interface TodosResponse {
   limit: number;
 }
 
-
 export const loginUser = async (
-  userData: { username: string, password: string }
+  userData: { username: string; password: string }
 ) => {
   try {
     const { data } = await axios.post(`${clientApi}/login`, userData);
@@ -31,12 +29,13 @@ export const loginUser = async (
     }
 
     return data;
-  } catch (error) { 
-    toast.error(error?.response?.data?.message || 'Login failed. Please try again.');
-    
+  } catch (error) {
+    const err = error as AxiosError;
+    toast.error(err?.response?.data?.message || 'Login failed. Please try again.');
+
     return {
       status: 'error',
-      message: error.message,
+      message: err.message,
     };
   }
 };
@@ -48,20 +47,20 @@ export const getTodos = async (
   completed: boolean
 ): Promise<TodosResponse | { status: string; message: string }> => {
   try {
-    const skip = (page - 1) * limit; 
-    const { data } = await axios.get<TodosResponse>(
-      `${todoApi}/${userId}?skip=${skip}&limit=${limit}&completed=${completed}`
-    );
-    return data;
-  } catch (error: any) {
-    console.error('Error fetching todos:', error);
+    const skip = (page - 1) * limit;
+    const queryParams = new URLSearchParams({ skip: skip.toString(), limit: limit.toString(), completed: completed.toString() }).toString();
+    const { data } = await axios.get<TodosResponse>(`${todoApi}/${userId}?${queryParams}`);
 
-    toast.error(error?.response?.data?.message || 'Error fetching todos. Please try again.');
-    
+    return data;
+  } catch (error) {
+    const err = error as AxiosError;
+    console.error('Error fetching todos:', err);
+
+    toast.error(err?.response?.data?.message || 'Error fetching todos. Please try again.');
+
     return {
       status: 'error',
-      message: error.message,
+      message: err.message,
     };
   }
 };
-

@@ -1,64 +1,103 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import Login from '../pages/Login';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { loginUser } from '../helper/axios';
+import { useNavigate } from 'react-router-dom';
+import useAuth, { userinfo } from '../hooks/useAuth';
+import Login from '../pages/Login';
 
-// Mocking the API
-jest.mock('../helper/axios', () => ({
-  loginUser: jest.fn(),
+jest.mock('../helper/axios');
+jest.mock('react-router-dom', () => ({
+  useNavigate: jest.fn(),
 }));
 
-describe('Login Component - Username, Password, and Button', () => {
-  test('should render username and password input fields', () => {
-    render(<Login />);
+jest.mock('../hooks/useAuth', () => ({
+  useAuth: jest.fn(),
+  userinfo: jest.fn(),
+}));
 
-    // Check if Username and Password fields are present
+describe('Login Component', () => {
+  const mockSetAuth = jest.fn();
+  const mockSetUserData = jest.fn();
+  const mockNavigate = jest.fn();
+
+  beforeEach(() => {
+    (useAuth as jest.Mock).mockReturnValue({ setAuth: mockSetAuth });
+    (userinfo as jest.Mock).mockReturnValue({ setuserData: mockSetUserData });
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+  });
+
+  it('should render the login form', () => {
+    render(<Login />);
+    
     expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Login/i })).toBeInTheDocument();
   });
 
-  test('should update username and password input values on change', () => {
+  it('should update form values on input change', () => {
     render(<Login />);
 
-    // Simulate user input
-    fireEvent.change(screen.getByLabelText(/Username/i), { target: { value: 'testUser' } });
-    fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: 'password123' } });
+    const usernameInput = screen.getByLabelText(/Username/i) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/Password/i) as HTMLInputElement;
 
-    // Check if the input values are updated correctly
-    expect(screen.getByLabelText(/Username/i).value).toBe('testUser');
-    expect(screen.getByLabelText(/Password/i).value).toBe('password123');
+    fireEvent.change(usernameInput, { target: { value: 'testUser' } });
+    fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
+
+    expect(usernameInput.value).toBe('testUser');
+    expect(passwordInput.value).toBe('testPassword');
   });
 
-  test('should disable the login button when loading', async () => {
+  it('should call loginUser and setAuth on form submit with valid credentials', async () => {
+    const mockLoginResponse = {
+      accessToken: 'mockAccessToken',
+      userData: { username: 'testUser', email: 'test@user.com' },
+    };
+    
+    (loginUser as jest.Mock).mockResolvedValue(mockLoginResponse);
+    
     render(<Login />);
 
-    // Simulate user input
-    fireEvent.change(screen.getByLabelText(/Username/i), { target: { value: 'testUser' } });
-    fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: 'password123' } });
+    const usernameInput = screen.getByLabelText(/Username/i) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/Password/i) as HTMLInputElement;
+    const submitButton = screen.getByRole('button', { name: /Login/i });
 
-    // Mock the loginUser function to simulate loading state
-    loginUser.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 1000)));
+    fireEvent.change(usernameInput, { target: { value: 'testUser' } });
+    fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
+    fireEvent.click(submitButton);
 
-    // Click the login button
-    fireEvent.click(screen.getByRole('button', { name: /Login/i }));
-
-    // Check if the button is disabled during loading
-    expect(screen.getByRole('button', { name: /Login/i })).toBeDisabled();
-
-    // Wait for the loading state to finish
-    await loginUser();
-
-    // Check if the button is enabled after loading
-    expect(screen.getByRole('button', { name: /Login/i })).not.toBeDisabled();
+    await waitFor(() => expect(loginUser).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(mockSetAuth).toHaveBeenCalledWith(mockLoginResponse));
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/todolist'));
   });
 
-  test('should enable the login button when inputs are provided', () => {
+  it('should display an error message when login fails', async () => {
+    const mockError = { response: { data: { message: 'Invalid login credentials.' } } };
+    
+    (loginUser as jest.Mock).mockRejectedValue(mockError);
+    
     render(<Login />);
 
-    // Simulate user input
-    fireEvent.change(screen.getByLabelText(/Username/i), { target: { value: 'testUser' } });
-    fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: 'password123' } });
+    const usernameInput = screen.getByLabelText(/Username/i) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/Password/i) as HTMLInputElement;
+    const submitButton = screen.getByRole('button', { name: /Login/i });
 
-    // Check if the button is enabled when inputs are filled
-    expect(screen.getByRole('button', { name: /Login/i })).not.toBeDisabled();
+    fireEvent.change(usernameInput, { target: { value: 'testUser' } });
+    fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => expect(screen.getByText('Invalid login credentials.')).toBeInTheDocument());
+  });
+
+  it('should show loading spinner when submitting', () => {
+    render(<Login />);
+
+    const usernameInput = screen.getByLabelText(/Username/i) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/Password/i) as HTMLInputElement;
+    const submitButton = screen.getByRole('button', { name: /Login/i });
+
+    fireEvent.change(usernameInput, { target: { value: 'testUser' } });
+    fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
+    fireEvent.click(submitButton);
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
   });
 });
