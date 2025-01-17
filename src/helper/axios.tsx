@@ -1,11 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { toast } from "react-toastify";
 
-const rootUrl = import.meta.env.MODE === 'production'
-  ? import.meta.env.VITE_ROOT_API
-  : 'https://dummyjson.com';
-
-// const rootUrl = 'https://dummyjson.com';
+const rootUrl = 'https://dummyjson.com';
 
 const clientApi = `${rootUrl}/auth`;
 const todoApi = `${rootUrl}/todos/user`;

@@ -6,7 +6,6 @@ import {useAuth} from '../hooks/useAuth';
 import TodoList from '../pages/Todolist/Todolist';
 import '@testing-library/jest-dom';
 
-// Make sure all required providers are available
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <BrowserRouter>
@@ -15,7 +14,6 @@ const renderWithProviders = (component: React.ReactElement) => {
   );
 };
 
-// Mock the modules
 jest.mock('../helper/axios');
 jest.mock('../hooks/useAuth');
 jest.mock('react-router-dom', () => ({
@@ -23,7 +21,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => jest.fn(),
 }));
 
-// Mock data
+
 const mockTodos = [
   { todo: 'Test todo 1', completed: true },
   { todo: 'Test todo 2', completed: false },
@@ -36,14 +34,12 @@ const mockResponse = {
 
 describe('TodoList Component', () => {
   beforeEach(() => {
-    // Mock localStorage
+   
     const mockUserData = { name: 'Test User' };
     Storage.prototype.getItem = jest.fn(() => JSON.stringify(mockUserData));
     
-    // Mock useAuth
     (useAuth as jest.Mock).mockReturnValue({ auth: true });
     
-    // Mock getTodos
     (getTodos as jest.Mock).mockResolvedValue(mockResponse);
   });
 
@@ -77,8 +73,6 @@ describe('TodoList Component', () => {
   //   });
   // });
   
-  
-  
 
   test('shows "No todos found" message when no todos are available', async () => {
     (getTodos as jest.Mock).mockResolvedValueOnce({
@@ -94,7 +88,6 @@ describe('TodoList Component', () => {
   });
 
   test('redirects to home when not authenticated', () => {
-    // Mock useAuth to return no auth
     (useAuth as jest.Mock).mockReturnValueOnce({ auth: false });
     const mockNavigate = jest.fn();
     jest.spyOn(require('react-router-dom'), 'useNavigate').mockReturnValue(mockNavigate);
