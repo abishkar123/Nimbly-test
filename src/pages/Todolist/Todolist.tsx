@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {useAuth} from '../hooks/useAuth';
-import { getTodos } from '../helper/axios';
+import {useAuth} from '../../hooks/useAuth';
+import { getTodos } from '../../helper/axios';
 import ReactPaginate from 'react-paginate';
-import { Header } from '../components/Header/Header';
+import { Header } from '../../components/Header/Header';
 import { Container, Table } from 'react-bootstrap';
 
 interface Todo {

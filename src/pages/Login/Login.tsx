@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useAuth, userinfo } from '../hooks/useAuth';
+import { useAuth, userinfo } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../helper/axios';
+import { loginUser } from '../../helper/axios';
 import { Form, Spinner, Button } from 'react-bootstrap';
 
 interface FormState {
@@ -15,8 +15,8 @@ interface FocusedFields {
 }
 
 const Login: React.FC = () => {
-  const {...setAuth } = useAuth();
-  const {...setuserData } = userinfo();
+  const {setAuth } = useAuth();
+  const {setuserData } = userinfo();
   const [form, setForm] = useState<FormState>({ username: '', password: '' });
   const [focusedFields, setFocusedFields] = useState<FocusedFields>({
     username: false,
@@ -26,6 +26,7 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<{ status?: string; message?: string }>({});
   const navigate = useNavigate();
+  
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,7 +58,8 @@ const Login: React.FC = () => {
 
         setAuth(userData);
         setuserData(userData);
-        navigate('/todolist');
+        
+        navigate("/todolist");
       } else {
         setError('Invalid login credentials.');
       }
@@ -72,7 +74,7 @@ const Login: React.FC = () => {
     <div className="login-form">
       <p className="text-2xl font-semibold text-center p-3">Things ToDo!</p>
       <Form className="mt-3 p-5" onSubmit={handleOnSubmit}>
-        {/* Username field */}
+       
         <div className="mb-6 relative">
           <input
             type="text"
@@ -95,7 +97,6 @@ const Login: React.FC = () => {
           </label>
         </div>
 
-        {/* Password field */}
         <div className="mb-6 relative">
           <input
             type="password"

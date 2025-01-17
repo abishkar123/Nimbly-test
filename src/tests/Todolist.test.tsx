@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { getTodos } from '../helper/axios';
 import {useAuth} from '../hooks/useAuth';
-import TodoList from '../pages/Todolist';
+import TodoList from '../pages/Todolist/Todolist';
 import '@testing-library/jest-dom';
 
 // Make sure all required providers are available
@@ -81,7 +81,6 @@ describe('TodoList Component', () => {
   
 
   test('shows "No todos found" message when no todos are available', async () => {
-    // Mock empty todos response
     (getTodos as jest.Mock).mockResolvedValueOnce({
       todos: [],
       total: 0,

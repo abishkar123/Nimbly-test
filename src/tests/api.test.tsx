@@ -11,7 +11,6 @@ jest.mock('react-toastify', () => ({
   },
 }));
 
-// Suppress console.error in the tests
 beforeAll(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });

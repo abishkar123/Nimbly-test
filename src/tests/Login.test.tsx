@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom'; 
 import { loginUser } from '../helper/axios';
 import '@testing-library/jest-dom';
-import Login from '../pages/Login';
+import Login from '../pages/Login/Login';
 
 jest.mock('../helper/axios'); 
 

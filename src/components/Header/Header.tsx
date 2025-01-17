@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const Header = () => {
     const {setAuth} = useAuth()
-    const Navigate = useNavigate()
+    const navigate = useNavigate();
 
     const [userdetails, setUserDetails] = useState(() => {
     const storedUserData = localStorage.getItem('userdata');
@@ -23,11 +23,13 @@ export const Header = () => {
       
           toast.success('You have been logged out successfully!');
       
-          Navigate('/');
+          navigate("/");
         } catch (error) {
           toast.error('Failed to log out. Please try again.');
         }
       };
+
+      
   return (
     <div className='Container'>
      <div className='parent-container'>

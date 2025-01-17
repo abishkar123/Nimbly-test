@@ -1,31 +1,38 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
-import TodoList from './pages/Todolist';
-import { ToastContainer } from 'react-toastify'; 
-
-import './App.css'
+import { ToastContainer } from 'react-toastify';
 import { useAuth } from './hooks/useAuth';
+import PrivateRoute from './components/Private-route/Private-route';
+import Login from './pages/Login/Login';
+import TodoList from './pages/Todolist/Todolist';
+import './App.css';
+
+
 const App: React.FC = () => {
-  const { auth } = useAuth(); 
- 
+  const { auth } = useAuth();
 
   return (
     <>
       <Router>
         <Routes>
-          <Route 
-            path="/" 
-            element={auth ? <Navigate to="/todolist" /> : <Login />} 
-          />
-          <Route 
-            path="/todolist" 
-            element={auth ? <TodoList /> : <Navigate to="/" />} 
+          <Route
+            path="/"
+            element={auth ? <Navigate to="/todolist" replace /> : <Login/>}
           />
 
+          <Route
+            path="/todolist"
+            element={
+              <PrivateRoute>
+                <TodoList/>
+              </PrivateRoute>
+            }
+          />
+          
         </Routes>
       </Router>
-      <ToastContainer />
+
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
   );
 };
