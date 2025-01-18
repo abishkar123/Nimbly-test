@@ -80,23 +80,28 @@ todolist-form{
 
  }
 
+ @media screen and (max-width: 412px){
+    .login-form{
+        position: relative;
+        left: 4rem;
+        width: 30vh;
+    }
+    .Custom-button{
+        width: 10rem;
+    }
 
+ }
 
-@media screen and (max-width: 600px) {
+ @media screen and (min-width:413px) and (max-width: 600px) {
     .login-form{
         position: relative;
         left:4rem;
         width: 55vh;
-        
-    
     }
     .Custom-button{
         width:15rem;
 
     }
-
-  
-
 
 }
 
@@ -106,4 +111,3 @@ todolist-form{
         left: 16rem;
     }
 }
-
