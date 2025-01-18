@@ -20,7 +20,7 @@ describe('Login Component', () => {
   });
 
   test('should call login API and navigate on successful login', async () => {
-    loginUser.mockResolvedValue({ accessToken: 'mockToken' });
+    (loginUser as jest.Mock).mockResolvedValue({ accessToken: 'mockToken' });
 
     render(
       <BrowserRouter> 

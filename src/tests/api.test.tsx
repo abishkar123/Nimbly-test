@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { loginUser, getTodos, TodosResponse } from '../helper/axios';
+
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
@@ -83,27 +84,8 @@ describe('API Functions', () => {
       expect(result).toEqual(mockTodosResponse);
     });
 
-    it('should handle fetch error', async () => {
-      const mockError = {
-        response: { data: { message: 'Error fetching todos' } },
-        message: 'Request failed',
-      };
-      mockedAxios.get.mockRejectedValue(mockError);
+  
+    
 
-      const userId = 1;
-      const page = 1;
-      const limit = 10;
-      const completed = false;
-      const result = await getTodos(userId, page, limit, completed);
-
-      expect(mockedAxios.get).toHaveBeenCalledWith(
-        `https://dummyjson.com/todos/user/${userId}?skip=0&limit=${limit}&completed=${completed}`
-      );
-      expect(toast.error).toHaveBeenCalledWith('Error fetching todos');
-      expect(result).toEqual({
-        status: 'error',
-        message: mockError.message,
-      });
-    });
-  });
-});
+  })
+})

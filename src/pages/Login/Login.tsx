@@ -7,6 +7,7 @@ import { Form, Spinner, Button } from 'react-bootstrap';
 interface FormState {
   username: string;
   password: string;
+  expiresInMins?: number;
 }
 
 interface FocusedFields {
@@ -26,7 +27,7 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<{ status?: string; message?: string }>({});
   const navigate = useNavigate();
-  
+
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -48,9 +49,10 @@ const Login: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setResponse({});
 
     try {
-      const userData = await loginUser({ ...form, expiresInMins: 30 });
+      const userData = await loginUser({ ...form, expiresInMins: 30 } as { username: string; password: string; expiresInMins: number });
 
       if (userData?.accessToken) {
         localStorage.setItem('userdata', JSON.stringify(userData));

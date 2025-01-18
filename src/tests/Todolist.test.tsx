@@ -47,32 +47,6 @@ describe('TodoList Component', () => {
     jest.clearAllMocks();
   });
 
- 
-  //   // Mock todos response
-  //   const mockTodos = [
-  //     { id: 1, todo: 'Test todo 1', completed: true },
-  //     { id: 2, todo: 'Test todo 2', completed: false },
-  //   ];
-  
-  //   // Mock getTodos response
-  //   (getTodos as jest.Mock).mockResolvedValueOnce({
-  //     todos: mockTodos,
-  //     total: mockTodos.length,
-  //   });
-  
-  //   renderWithProviders(<TodoList />); // Ensure the component is rendered with the todos
-  
-  //   await waitFor(() => {
-  //     // Ensure the table is rendered
-  //     const todoTable = screen.getByRole('table');
-  //     expect(todoTable).toBeInTheDocument();
-  
-  //     // Ensure the text "Test todo 1" is rendered
-  //     const todoItem = screen.getByText(/Test todo 1/i);
-  //     expect(todoItem).toBeInTheDocument();
-  //   });
-  // });
-  
 
   test('shows "No todos found" message when no todos are available', async () => {
     (getTodos as jest.Mock).mockResolvedValueOnce({

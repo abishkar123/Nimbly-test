@@ -16,6 +16,18 @@ interface TodoResponse {
   todos: Todo[];
   total: number;
 }
+interface TodosResponse {
+  todos: Todo[];
+  total: number;
+}
+
+interface ErrorResponse {
+  status: string;
+  message: string;
+}
+
+type GetTodosResponse = TodosResponse | ErrorResponse;
+
 
 const TodoList: React.FC = () => {
   const { auth } = useAuth();
@@ -48,8 +60,8 @@ const TodoList: React.FC = () => {
       if (!userId) return;
 
       try {
-        const response: TodoResponse = await getTodos(userId, page, limit, completedFilter);
-        if (response?.todos) {
+        const response: GetTodosResponse = await getTodos(userId, page, limit,  completedFilter === 'true');
+        if ('todos' in response) {
           setTodos(response.todos);
           setTotalPages(Math.ceil(response.total / limit));
           setFilteredTodos(filterTodos(response.todos, completedFilter));

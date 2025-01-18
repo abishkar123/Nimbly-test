@@ -12,7 +12,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
      "jsx": "react-jsx",
-     "types": ["jest", "@testing-library/jest-dom"]
+     "noEmit": true,
+     "allowImportingTsExtensions": true,
+    "types": ["node", "jest", "@testing-library/jest-dom"],
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts", "tests/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
