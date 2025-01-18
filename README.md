@@ -1,12 +1,23 @@
 # TodoList App
-Welcome to the vite-react app for ToDo List. This app user for track the ToDo List.
+Welcome to the vite-react app for ToDo List. This app user for track the ToDo List, and build with
+
+## Project Overview 
+A TypeScript-react applciation for the retrive ToDo List data from `https://dummyjson.com/docs`. 
+
+## Features 
+- Login page where user authenticated.
+- single page applicaton 
+- state manaagement - userinfo Persisted
+- Todo List based on user ID
+- pagination applciaion details
+- ToDo list based on completed or not
 
 ## Geeting Started
-## Prerequisties 
-Make sure you have nodejs and npm installed on your machine.
+## Prerequisits 
+- Nodejs(16+)
+- NPM
 
-
-## Installation 
+## Setup Instructions
 1. Clone the repository:
 
    ```bash
@@ -28,22 +39,15 @@ Make sure you have nodejs and npm installed on your machine.
    npm test
    ```
 
-
 ## Project Strcuture 
 
-- src/: Contain the soruce code of the application 
+- src/: Contain the soruce code of the application.
  - compontents/:  all custom components ex-Header
  - page/: contain all pages such a login, Todolist page
  - private-route: route the page based on authentication
  - useAuth:/ contain state management for user
- - helper:/ this folder have fetch frontend api
-
- ## Features 
- - Login page where user authenticated 
- - single page applicaton 
- - state manaagement - userinfo Persisted
- - Todo List
- - pagination applciaion details
+ - helper:/ this folder have fetch frontend api.
+ - tests:/ there three different test, for each page and api.
 
  ## package and dependencies
  - **dotenv**: Load environment variables from a .env file.
