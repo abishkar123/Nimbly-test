@@ -5,11 +5,11 @@ const config: Config = {
   testEnvironment: 'jsdom',
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: '<rootDir>/tsconfig.json', // Path to your TypeScript config
-      isolatedModules: true,              // Moved from `globals`
+      tsconfig: '<rootDir>/tsconfig.json', 
+      isolatedModules: true,              
     }],
   },
-  setupFiles: ['<rootDir>/jest.setup.ts'], // Path to setup file
+  setupFiles: ['<rootDir>/jest.setup.ts'], 
   moduleFileExtensions: ['ts', 'tsx', 'js', 'json'],
 };
 
